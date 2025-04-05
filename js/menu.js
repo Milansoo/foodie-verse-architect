@@ -1,4 +1,6 @@
 
+// Add these functions to your existing menu.js file
+
 // Add to Cart Function
 function addToCart(e) {
   // Get current user
