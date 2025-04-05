@@ -1,158 +1,149 @@
 
-// Authentication and User Management
+// Authentication Functionality
 document.addEventListener('DOMContentLoaded', () => {
   // DOM Elements
-  const loginLink = document.getElementById('login-link');
-  const accountLink = document.getElementById('account-link');
-  const logoutBtn = document.getElementById('logout-btn');
-  const dashboardLink = document.getElementById('dashboard-link');
+  const loginForm = document.getElementById('login-form');
+  const registerForm = document.getElementById('register-form');
+  const tabButtons = document.querySelectorAll('.tab-btn');
   
-  // Auth Form Elements
-  const loginForm = document.getElementById('loginForm');
-  const registerForm = document.getElementById('registerForm');
-  const loginMessage = document.getElementById('login-message');
-  const registerMessage = document.getElementById('register-message');
-  
-  // Auth Modal Elements
+  const termsLink = document.getElementById('terms-link');
   const termsModal = document.getElementById('terms-modal');
-  const showTermsBtn = document.getElementById('show-terms');
   const acceptTermsBtn = document.getElementById('accept-terms');
-  const closeModalBtn = document.querySelector('.close-button');
-  const termsCheckbox = document.getElementById('terms');
+  const closeButton = document.querySelector('.close-button');
   
-  // Auth Tab Elements
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const authForms = document.querySelectorAll('.auth-form');
-  
-  // Password Toggle Elements
-  const togglePasswordBtns = document.querySelectorAll('.toggle-password');
-  
-  // Sample admin user for testing
-  const adminUser = {
-    name: 'Admin User',
-    email: 'admin@example.com',
-    password: 'admin123',
-    role: 'admin'
-  };
-  
-  // Initialize local storage with admin user if it doesn't exist
+  // Initialize data if not exists
   if (!localStorage.getItem('users')) {
-    localStorage.setItem('users', JSON.stringify([adminUser]));
-  }
-  
-  // Check if the user is logged in
-  function checkAuthStatus() {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    
-    if (currentUser) {
-      // User is logged in
-      if (loginLink) loginLink.classList.add('hidden');
-      if (accountLink) accountLink.classList.remove('hidden');
-      
-      // Set dashboard link based on user role
-      if (dashboardLink && currentUser.role === 'admin') {
-        dashboardLink.innerHTML = '<a href="dashboard.html">Admin Dashboard</a>';
-      } else if (dashboardLink) {
-        dashboardLink.innerHTML = '<a href="dashboard.html">My Account</a>';
-      }
-      
-      // Show order cart on menu page for regular users
-      const orderCart = document.getElementById('order-cart');
-      if (orderCart && currentUser.role === 'user') {
-        orderCart.classList.remove('hidden');
-      }
-      
-      return true;
-    } else {
-      // User is not logged in
-      if (loginLink) loginLink.classList.remove('hidden');
-      if (accountLink) accountLink.classList.add('hidden');
-      return false;
-    }
-  }
-  
-  // Register a new user
-  function registerUser(name, email, password) {
-    // Get existing users
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    
-    // Check if email already exists
-    const userExists = users.some(user => user.email === email);
-    if (userExists) {
-      return {
-        success: false,
-        message: 'A user with this email already exists'
-      };
-    }
-    
-    // Create new user with 'user' role
-    const newUser = {
-      name,
-      email,
-      password, // In a real app, this would be hashed
-      role: 'user',
+    // Create default admin account
+    const defaultAdmin = {
+      name: 'Admin',
+      email: 'admin@example.com',
+      password: 'admin123',
+      role: 'admin',
       joinDate: new Date().toISOString()
     };
     
-    // Add user to storage
-    users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
+    // Create initial users array with admin
+    const initialUsers = [defaultAdmin];
+    localStorage.setItem('users', JSON.stringify(initialUsers));
     
-    return {
-      success: true,
-      message: 'Registration successful! You can now log in.'
-    };
-  }
-  
-  // Login user
-  function loginUser(email, password, remember = false) {
-    // Get users from local storage
-    const users = JSON.parse(localStorage.getItem('users')) || [];
+    // Create empty orders and menu items
+    if (!localStorage.getItem('orders')) {
+      localStorage.setItem('orders', JSON.stringify([]));
+    }
     
-    // Find user by email and password
-    const user = users.find(user => user.email === email && user.password === password);
-    
-    if (user) {
-      // Store user info (without password) in local storage
-      const { password, ...userWithoutPassword } = user;
-      localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword));
-      
-      // If remember me is checked, store email in local storage
-      if (remember) {
-        localStorage.setItem('rememberedEmail', email);
-      } else {
-        localStorage.removeItem('rememberedEmail');
-      }
-      
-      return {
-        success: true,
-        message: 'Login successful!',
-        user: userWithoutPassword
-      };
-    } else {
-      return {
-        success: false,
-        message: 'Invalid email or password'
-      };
+    if (!localStorage.getItem('menuItems')) {
+      const initialMenuItems = [
+        {
+          id: 'item1',
+          name: 'Classic Burger',
+          category: 'mains',
+          price: 12.99,
+          description: 'Juicy beef patty with lettuce, tomato, and special sauce on a brioche bun.',
+          image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+        },
+        {
+          id: 'item2',
+          name: 'Caesar Salad',
+          category: 'appetizers',
+          price: 8.99,
+          description: 'Crisp romaine lettuce with Caesar dressing, croutons, and parmesan cheese.',
+          image: 'https://images.unsplash.com/photo-1551248429-40975aa4de74?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+        },
+        {
+          id: 'item3',
+          name: 'Chocolate Cake',
+          category: 'desserts',
+          price: 6.99,
+          description: 'Rich chocolate cake with a molten center, served with vanilla ice cream.',
+          image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+        },
+        {
+          id: 'item4',
+          name: 'Signature Cocktail',
+          category: 'drinks',
+          price: 9.99,
+          description: 'Our signature blend of premium spirits with fresh fruit juices.',
+          image: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+        }
+      ];
+      localStorage.setItem('menuItems', JSON.stringify(initialMenuItems));
     }
   }
   
-  // Logout user
-  function logoutUser() {
-    localStorage.removeItem('currentUser');
-    checkAuthStatus();
-    window.location.href = 'index.html';
-  }
+  // Check if user is logged in
+  checkAuthStatus();
   
-  // Auth Event Listeners
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      logoutUser();
+  // Tab functionality
+  if (tabButtons) {
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all tab buttons and forms
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+        
+        // Add active class to clicked button and corresponding form
+        button.classList.add('active');
+        const formId = `${button.getAttribute('data-tab')}-form`;
+        document.getElementById(formId).classList.add('active');
+      });
     });
   }
   
-  // Register Form
+  // Login form functionality
+  if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const userType = document.querySelector('input[name="user-type"]:checked').value;
+      const rememberMe = document.getElementById('remember-me').checked;
+      
+      // Get users from localStorage
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      
+      // Find user with matching email and password
+      const user = users.find(user => user.email === email && user.password === password);
+      
+      const messageEl = document.getElementById('login-message');
+      
+      // Check if user exists
+      if (!user) {
+        messageEl.textContent = 'Invalid email or password.';
+        messageEl.className = 'auth-message error';
+        return;
+      }
+      
+      // Check user role if they're trying to log in as admin
+      if (userType === 'admin' && user.role !== 'admin') {
+        messageEl.textContent = 'You do not have admin privileges.';
+        messageEl.className = 'auth-message error';
+        return;
+      }
+      
+      // Set current user in localStorage
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      
+      // Set session expiration if 'remember me' is not checked
+      if (!rememberMe) {
+        const expiration = new Date().getTime() + (24 * 60 * 60 * 1000); // 1 day
+        localStorage.setItem('sessionExpires', expiration);
+      } else {
+        localStorage.removeItem('sessionExpires');
+      }
+      
+      // Show success message and redirect
+      messageEl.textContent = 'Login successful! Redirecting...';
+      messageEl.className = 'auth-message success';
+      
+      // Redirect to dashboard after short delay
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 1000);
+    });
+  }
+  
+  // Registration form functionality
   if (registerForm) {
     registerForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -161,130 +152,78 @@ document.addEventListener('DOMContentLoaded', () => {
       const email = document.getElementById('register-email').value;
       const password = document.getElementById('register-password').value;
       const confirmPassword = document.getElementById('register-confirm-password').value;
-      const termsAccepted = document.getElementById('terms').checked;
+      const termsChecked = document.getElementById('terms-checkbox').checked;
+      
+      // Get message element
+      const messageEl = document.getElementById('register-message');
       
       // Validate form
-      if (!name || !email || !password || !confirmPassword) {
-        registerMessage.textContent = 'Please fill in all fields';
-        registerMessage.className = 'auth-message error';
+      if (!termsChecked) {
+        messageEl.textContent = 'Please accept the terms and conditions.';
+        messageEl.className = 'auth-message error';
         return;
       }
       
       if (password !== confirmPassword) {
-        registerMessage.textContent = 'Passwords do not match';
-        registerMessage.className = 'auth-message error';
+        messageEl.textContent = 'Passwords do not match.';
+        messageEl.className = 'auth-message error';
         return;
       }
       
-      if (!termsAccepted) {
-        registerMessage.textContent = 'You must accept the terms and conditions';
-        registerMessage.className = 'auth-message error';
+      // Get users from localStorage
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      
+      // Check if email already exists
+      if (users.some(user => user.email === email)) {
+        messageEl.textContent = 'Email already registered.';
+        messageEl.className = 'auth-message error';
         return;
       }
       
-      // Register user
-      const result = registerUser(name, email, password);
+      // Create new user object (all new registrations are regular users, not admins)
+      const newUser = {
+        name,
+        email,
+        password,
+        role: 'user', // Default role is 'user'
+        joinDate: new Date().toISOString()
+      };
       
-      if (result.success) {
-        registerMessage.textContent = result.message;
-        registerMessage.className = 'auth-message success';
+      // Add user to array and save to localStorage
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+      
+      // Show success message
+      messageEl.textContent = 'Registration successful! You can now log in.';
+      messageEl.className = 'auth-message success';
+      
+      // Reset form and show login tab after delay
+      setTimeout(() => {
         registerForm.reset();
-        
-        // Switch to login tab after successful registration
-        setTimeout(() => {
-          tabBtns[0].click();
-        }, 2000);
-      } else {
-        registerMessage.textContent = result.message;
-        registerMessage.className = 'auth-message error';
-      }
+        document.querySelector('.tab-btn[data-tab="login"]').click();
+      }, 2000);
     });
   }
   
-  // Login Form
-  if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const email = document.getElementById('login-email').value;
-      const password = document.getElementById('login-password').value;
-      const remember = document.getElementById('remember-me').checked;
-      
-      // Validate form
-      if (!email || !password) {
-        loginMessage.textContent = 'Please enter both email and password';
-        loginMessage.className = 'auth-message error';
-        return;
-      }
-      
-      // Login user
-      const result = loginUser(email, password, remember);
-      
-      if (result.success) {
-        loginMessage.textContent = result.message;
-        loginMessage.className = 'auth-message success';
-        
-        // Redirect after successful login
-        setTimeout(() => {
-          if (result.user.role === 'admin') {
-            window.location.href = 'dashboard.html';
-          } else {
-            window.location.href = 'index.html';
-          }
-        }, 1500);
-      } else {
-        loginMessage.textContent = result.message;
-        loginMessage.className = 'auth-message error';
-      }
-    });
-    
-    // Check if there's a remembered email
-    const rememberedEmail = localStorage.getItem('rememberedEmail');
-    if (rememberedEmail) {
-      document.getElementById('login-email').value = rememberedEmail;
-      document.getElementById('remember-me').checked = true;
-    }
-  }
-  
-  // Auth Tab Switching
-  if (tabBtns.length > 0) {
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        // Remove active class from all tabs and forms
-        tabBtns.forEach(b => b.classList.remove('active'));
-        authForms.forEach(f => f.classList.remove('active'));
-        
-        // Add active class to current tab and form
-        btn.classList.add('active');
-        const formId = btn.getAttribute('data-tab') + '-form';
-        document.getElementById(formId).classList.add('active');
-        
-        // Clear messages when switching tabs
-        if (loginMessage) loginMessage.textContent = '';
-        if (registerMessage) registerMessage.textContent = '';
-      });
-    });
-  }
-  
-  // Terms Modal
-  if (showTermsBtn && termsModal) {
-    showTermsBtn.addEventListener('click', (e) => {
+  // Terms and conditions modal
+  if (termsLink && termsModal) {
+    termsLink.addEventListener('click', (e) => {
       e.preventDefault();
       termsModal.style.display = 'block';
     });
-  }
-  
-  if (acceptTermsBtn && termsModal && termsCheckbox) {
-    acceptTermsBtn.addEventListener('click', () => {
-      termsCheckbox.checked = true;
-      termsModal.style.display = 'none';
-    });
-  }
-  
-  if (closeModalBtn && termsModal) {
-    closeModalBtn.addEventListener('click', () => {
-      termsModal.style.display = 'none';
-    });
+    
+    if (closeButton) {
+      closeButton.addEventListener('click', () => {
+        termsModal.style.display = 'none';
+      });
+    }
+    
+    if (acceptTermsBtn) {
+      acceptTermsBtn.addEventListener('click', () => {
+        document.getElementById('terms-checkbox').checked = true;
+        termsModal.style.display = 'none';
+      });
+    }
     
     // Close modal when clicking outside
     window.addEventListener('click', (e) => {
@@ -294,26 +233,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   
-  // Password Toggle
-  if (togglePasswordBtns.length > 0) {
-    togglePasswordBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const input = btn.parentElement.querySelector('input');
-        const icon = btn.querySelector('i');
-        
-        if (input.type === 'password') {
-          input.type = 'text';
-          icon.classList.remove('fa-eye');
-          icon.classList.add('fa-eye-slash');
-        } else {
-          input.type = 'password';
-          icon.classList.remove('fa-eye-slash');
-          icon.classList.add('fa-eye');
-        }
-      });
-    });
+  // Check auth status function
+  function checkAuthStatus() {
+    const currentUser = localStorage.getItem('currentUser');
+    const sessionExpires = localStorage.getItem('sessionExpires');
+    
+    // Check if session has expired
+    if (sessionExpires && new Date().getTime() > parseInt(sessionExpires)) {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('sessionExpires');
+      return;
+    }
+    
+    // If user is logged in, redirect to dashboard
+    if (currentUser && window.location.pathname.includes('auth.html')) {
+      window.location.href = 'dashboard.html';
+    }
   }
-  
-  // Check auth status when the page loads
-  checkAuthStatus();
 });
+
+// Logout function (can be called from other scripts)
+function logout() {
+  localStorage.removeItem('currentUser');
+  localStorage.removeItem('sessionExpires');
+  window.location.href = 'index.html';
+}

@@ -73,6 +73,15 @@
   margin-top: var(--spacing-md);
 }
 
+/* User Type Selection */
+.user-type-selection {
+  margin-bottom: var(--spacing-md);
+}
+
+.user-type-selection label {
+  margin-right: var(--spacing-md);
+}
+
 /* Terms and Conditions Modal */
 .terms-content {
   max-height: 300px;
