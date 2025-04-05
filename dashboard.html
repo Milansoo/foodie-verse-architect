@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Savory Bites Restaurant</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Header Section -->
+    <header id="main-header">
+      <div class="logo">
+        <h1><span>Savory</span> Bites</h1>
+      </div>
+      <nav id="navbar">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li id="account-link"><a href="#" id="account-dropdown" class="active"><i class="fas fa-user"></i></a>
+            <ul class="dropdown-menu">
+              <li id="dashboard-link"><a href="dashboard.html">Dashboard</a></li>
+              <li id="logout-link"><a href="#" id="logout-btn">Logout</a></li>
+            </ul>
+          </li>
+          <li>
+            <div class="theme-switch">
+              <input type="checkbox" id="theme-toggle">
+              <label for="theme-toggle">
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
+              </label>
+            </div>
+          </li>
+        </ul>
+        <div class="hamburger-menu">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+      <div class="sidebar">
+        <div class="user-info" id="user-info">
+          <!-- User info will be loaded dynamically -->
+        </div>
+        <ul class="sidebar-menu">
+          <li class="menu-item active" data-section="profile">
+            <i class="fas fa-user"></i>
+            <span>My Profile</span>
+          </li>
+          <li class="menu-item user-only" data-section="my-orders">
+            <i class="fas fa-shopping-bag"></i>
+            <span>My Orders</span>
+          </li>
+          <li class="menu-item admin-only" data-section="menu-management">
+            <i class="fas fa-utensils"></i>
+            <span>Menu Management</span>
+          </li>
+          <li class="menu-item admin-only" data-section="order-management">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Order Management</span>
+          </li>
+          <li class="menu-item admin-only" data-section="user-management">
+            <i class="fas fa-users"></i>
+            <span>User Management</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="dashboard-content">
+        <!-- Profile Section -->
+        <section id="profile-section" class="dashboard-section active">
+          <h2>My Profile</h2>
+          <div class="profile-card">
+            <form id="profile-form">
+              <div class="form-group">
+                <label for="profile-name">Name</label>
+                <input type="text" id="profile-name" name="name">
+              </div>
+              <div class="form-group">
+                <label for="profile-email">Email</label>
+                <input type="email" id="profile-email" name="email" readonly>
+              </div>
+              <div class="form-group">
+                <label for="profile-phone">Phone</label>
+                <input type="tel" id="profile-phone" name="phone">
+              </div>
+              <div class="form-group">
+                <label for="profile-address">Address</label>
+                <textarea id="profile-address" name="address"></textarea>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn-primary">Update Profile</button>
+              </div>
+            </form>
+            <div id="profile-message" class="message"></div>
+            
+            <div class="change-password-section">
+              <h3>Change Password</h3>
+              <form id="change-password-form">
+                <div class="form-group">
+                  <label for="current-password">Current Password</label>
+                  <input type="password" id="current-password" name="current-password">
+                </div>
+                <div class="form-group">
+                  <label for="new-password">New Password</label>
+                  <input type="password" id="new-password" name="new-password">
+                </div>
+                <div class="form-group">
+                  <label for="confirm-new-password">Confirm New Password</label>
+                  <input type="password" id="confirm-new-password" name="confirm-new-password">
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="btn-secondary">Change Password</button>
+                </div>
+              </form>
+              <div id="password-message" class="message"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- My Orders Section (User Only) -->
+        <section id="my-orders-section" class="dashboard-section user-only">
+          <h2>My Orders</h2>
+          <div class="orders-list-container">
+            <div id="user-orders-list">
+              <!-- Orders will be loaded dynamically -->
+              <div class="loading">Loading your orders...</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Menu Management Section (Admin Only) -->
+        <section id="menu-management-section" class="dashboard-section admin-only">
+          <h2>Menu Management</h2>
+          <div class="admin-controls">
+            <button id="add-menu-item-btn" class="btn-primary"><i class="fas fa-plus"></i> Add New Item</button>
+          </div>
+          
+          <div class="menu-categories-filter">
+            <button class="category-btn active" data-category="all">All</button>
+            <button class="category-btn" data-category="appetizers">Appetizers</button>
+            <button class="category-btn" data-category="mains">Main Courses</button>
+            <button class="category-btn" data-category="desserts">Desserts</button>
+            <button class="category-btn" data-category="drinks">Drinks</button>
+          </div>
+          
+          <div class="menu-items-table-container">
+            <table class="menu-items-table">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="menu-items-table-body">
+                <!-- Menu items will be loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Order Management Section (Admin Only) -->
+        <section id="order-management-section" class="dashboard-section admin-only">
+          <h2>Order Management</h2>
+          <div class="order-filters">
+            <div class="filter-group">
+              <label for="order-status-filter">Status:</label>
+              <select id="order-status-filter">
+                <option value="all">All</option>
+                <option value="pending">Pending</option>
+                <option value="processing">Processing</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="order-date-filter">Date:</label>
+              <input type="date" id="order-date-filter">
+            </div>
+            <button id="clear-filters-btn" class="btn-secondary">Clear Filters</button>
+          </div>
+          
+          <div class="orders-table-container">
+            <table class="orders-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Date</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body">
+                <!-- Orders will be loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- User Management Section (Admin Only) -->
+        <section id="user-management-section" class="dashboard-section admin-only">
+          <h2>User Management</h2>
+          <div class="users-table-container">
+            <table class="users-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Joined Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="users-table-body">
+                <!-- Users will be loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Menu Item Modal (Admin Only) -->
+    <div id="menu-item-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2 id="menu-modal-title">Add Menu Item</h2>
+        <form id="menu-item-form">
+          <input type="hidden" id="menu-item-id">
+          <div class="form-group">
+            <label for="menu-item-name">Item Name</label>
+            <input type="text" id="menu-item-name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="menu-item-category">Category</label>
+            <select id="menu-item-category" name="category" required>
+              <option value="">Select a category</option>
+              <option value="appetizers">Appetizers</option>
+              <option value="mains">Main Courses</option>
+              <option value="desserts">Desserts</option>
+              <option value="drinks">Drinks</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="menu-item-price">Price ($)</label>
+            <input type="number" id="menu-item-price" name="price" min="0" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label for="menu-item-description">Description</label>
+            <textarea id="menu-item-description" name="description" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="menu-item-image">Image URL</label>
+            <input type="text" id="menu-item-image" name="image">
+            <p class="help-text">Enter a URL for the item image</p>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn-primary">Save Item</button>
+          </div>
+        </form>
+        <div id="menu-item-message" class="message"></div>
+      </div>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div id="order-detail-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Order Details</h2>
+        <div id="order-detail-content">
+          <!-- Order details will be loaded dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-confirmation-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Confirm Deletion</h2>
+        <p id="delete-confirmation-message">Are you sure you want to delete this item?</p>
+        <div class="modal-buttons">
+          <button id="confirm-delete-btn" class="btn-danger">Delete</button>
+          <button id="cancel-delete-btn" class="btn-secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Savory Bites</h3>
+          <p>Experience the art of fine dining in a comfortable and elegant atmosphere.</p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-yelp"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Hours</h3>
+          <p>Monday - Thursday: 11am - 10pm</p>
+          <p>Friday - Saturday: 11am - 11pm</p>
+          <p>Sunday: 10am - 9pm</p>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p><i class="fas fa-map-marker-alt"></i> 123 Main Street, New York, NY 10001</p>
+          <p><i class="fas fa-phone"></i> (212) 555-1234</p>
+          <p><i class="fas fa-envelope"></i> info@savorybites.com</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Savory Bites Restaurant. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

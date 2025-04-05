@@ -1,26 +1,181 @@
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>foodie-verse-architect</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Savory Bites Restaurant</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Header Section -->
+    <header id="main-header">
+      <div class="logo">
+        <h1><span>Savory</span> Bites</h1>
+      </div>
+      <nav id="navbar">
+        <ul>
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li id="login-link"><a href="auth.html">Login</a></li>
+          <li id="account-link" class="hidden"><a href="#" id="account-dropdown"><i class="fas fa-user"></i></a>
+            <ul class="dropdown-menu">
+              <li id="dashboard-link"><a href="dashboard.html">Dashboard</a></li>
+              <li id="logout-link"><a href="#" id="logout-btn">Logout</a></li>
+            </ul>
+          </li>
+          <li>
+            <div class="theme-switch">
+              <input type="checkbox" id="theme-toggle">
+              <label for="theme-toggle">
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
+              </label>
+            </div>
+          </li>
+        </ul>
+        <div class="hamburger-menu">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+      </nav>
+    </header>
 
-    <meta property="og:title" content="foodie-verse-architect" />
-    <meta property="og:description" content="Lovable Generated Project" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h2>Exquisite Dining Experience</h2>
+        <p>Discover a culinary journey like no other at Savory Bites</p>
+        <div class="hero-buttons">
+          <a href="menu.html" class="btn-primary">View Menu</a>
+          <a href="reservation.html" class="btn-secondary">Make a Reservation</a>
+        </div>
+      </div>
+    </section>
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-  </head>
+    <!-- Features Section -->
+    <section class="features">
+      <div class="feature-card">
+        <i class="fas fa-utensils"></i>
+        <h3>Finest Cuisine</h3>
+        <p>Artfully prepared dishes using locally sourced ingredients</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-glass-cheers"></i>
+        <h3>Premium Drinks</h3>
+        <p>Exceptional wine pairings and signature cocktails</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-concierge-bell"></i>
+        <h3>Impeccable Service</h3>
+        <p>Our staff is dedicated to making your visit memorable</p>
+      </div>
+    </section>
 
-  <body>
-    <div id="root"></div>
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    <!-- Special Menu Preview -->
+    <section class="menu-preview">
+      <h2>Our Signature Dishes</h2>
+      <div class="dishes">
+        <div class="dish-card">
+          <div class="dish-image" style="background-image: url('https://images.unsplash.com/photo-1464500447964-8970009b4b6a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');"></div>
+          <div class="dish-info">
+            <h3>Herb-Crusted Salmon</h3>
+            <p>Fresh Atlantic salmon with a crispy herb crust, served with seasonal vegetables</p>
+            <span class="price">$24.95</span>
+          </div>
+        </div>
+        <div class="dish-card">
+          <div class="dish-image" style="background-image: url('https://images.unsplash.com/photo-1544025162-c59e1f6383ea?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80');"></div>
+          <div class="dish-info">
+            <h3>Truffle Risotto</h3>
+            <p>Creamy Arborio rice with wild mushrooms, truffle oil, and aged Parmesan</p>
+            <span class="price">$22.95</span>
+          </div>
+        </div>
+        <div class="dish-card">
+          <div class="dish-image" style="background-image: url('https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');"></div>
+          <div class="dish-info">
+            <h3>Filet Mignon</h3>
+            <p>Prime cut tenderloin, garlic mashed potatoes, and red wine reduction</p>
+            <span class="price">$32.95</span>
+          </div>
+        </div>
+      </div>
+      <div class="center-button">
+        <a href="menu.html" class="btn-primary">View Full Menu</a>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+      <h2>What Our Guests Say</h2>
+      <div class="testimonial-slider">
+        <div class="testimonial active">
+          <div class="testimonial-text">
+            <p>"The best dining experience I've had in years. The truffle risotto was absolutely divine!"</p>
+            <div class="testimonial-author">- Emily S.</div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <div class="testimonial-text">
+            <p>"Impeccable service and atmosphere. The chef's tasting menu was a culinary adventure."</p>
+            <div class="testimonial-author">- Michael R.</div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <div class="testimonial-text">
+            <p>"From the moment we walked in, we were treated like royalty. Will definitely be coming back!"</p>
+            <div class="testimonial-author">- Sarah L.</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-dots">
+        <span class="dot active" data-index="0"></span>
+        <span class="dot" data-index="1"></span>
+        <span class="dot" data-index="2"></span>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Savory Bites</h3>
+          <p>Experience the art of fine dining in a comfortable and elegant atmosphere.</p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-yelp"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Hours</h3>
+          <p>Monday - Thursday: 11am - 10pm</p>
+          <p>Friday - Saturday: 11am - 11pm</p>
+          <p>Sunday: 10am - 9pm</p>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p><i class="fas fa-map-marker-alt"></i> 123 Main Street, New York, NY 10001</p>
+          <p><i class="fas fa-phone"></i> (212) 555-1234</p>
+          <p><i class="fas fa-envelope"></i> info@savorybites.com</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Savory Bites Restaurant. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+</body>
 </html>

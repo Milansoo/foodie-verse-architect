@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu - Savory Bites Restaurant</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/menu.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Header Section -->
+    <header id="main-header">
+      <div class="logo">
+        <h1><span>Savory</span> Bites</h1>
+      </div>
+      <nav id="navbar">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html" class="active">Menu</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li id="login-link"><a href="auth.html">Login</a></li>
+          <li id="account-link" class="hidden"><a href="#" id="account-dropdown"><i class="fas fa-user"></i></a>
+            <ul class="dropdown-menu">
+              <li id="dashboard-link"><a href="dashboard.html">Dashboard</a></li>
+              <li id="logout-link"><a href="#" id="logout-btn">Logout</a></li>
+            </ul>
+          </li>
+          <li>
+            <div class="theme-switch">
+              <input type="checkbox" id="theme-toggle">
+              <label for="theme-toggle">
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
+              </label>
+            </div>
+          </li>
+        </ul>
+        <div class="hamburger-menu">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Menu Page Content -->
+    <div class="page-header">
+      <h2>Our Menu</h2>
+      <p>Savor the flavors of our carefully crafted dishes</p>
+    </div>
+
+    <!-- Menu Categories -->
+    <div class="menu-categories">
+      <button class="category-btn active" data-category="all">All</button>
+      <button class="category-btn" data-category="appetizers">Appetizers</button>
+      <button class="category-btn" data-category="mains">Main Courses</button>
+      <button class="category-btn" data-category="desserts">Desserts</button>
+      <button class="category-btn" data-category="drinks">Drinks</button>
+    </div>
+
+    <!-- Menu Items Container -->
+    <div class="menu-container" id="menu-items-container">
+      <!-- Menu items will be loaded dynamically from JavaScript -->
+      <div class="loading">Loading menu items...</div>
+    </div>
+
+    <!-- Order Cart (only visible when logged in as user) -->
+    <div id="order-cart" class="hidden">
+      <h3>Your Order <button id="toggle-cart"><i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span></button></h3>
+      <div id="cart-items" class="cart-items hidden">
+        <div id="empty-cart-message">Your cart is empty</div>
+        <ul id="cart-items-list"></ul>
+        <div id="cart-total">Total: $0.00</div>
+        <button id="place-order-btn" class="btn-primary">Place Order</button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Savory Bites</h3>
+          <p>Experience the art of fine dining in a comfortable and elegant atmosphere.</p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-yelp"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Hours</h3>
+          <p>Monday - Thursday: 11am - 10pm</p>
+          <p>Friday - Saturday: 11am - 11pm</p>
+          <p>Sunday: 10am - 9pm</p>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p><i class="fas fa-map-marker-alt"></i> 123 Main Street, New York, NY 10001</p>
+          <p><i class="fas fa-phone"></i> (212) 555-1234</p>
+          <p><i class="fas fa-envelope"></i> info@savorybites.com</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Savory Bites Restaurant. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/menu.js"></script>
+</body>
+</html>

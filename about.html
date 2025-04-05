@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Savory Bites Restaurant</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/about.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Header Section -->
+    <header id="main-header">
+      <div class="logo">
+        <h1><span>Savory</span> Bites</h1>
+      </div>
+      <nav id="navbar">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="about.html" class="active">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li id="login-link"><a href="auth.html">Login</a></li>
+          <li id="account-link" class="hidden"><a href="#" id="account-dropdown"><i class="fas fa-user"></i></a>
+            <ul class="dropdown-menu">
+              <li id="dashboard-link"><a href="dashboard.html">Dashboard</a></li>
+              <li id="logout-link"><a href="#" id="logout-btn">Logout</a></li>
+            </ul>
+          </li>
+          <li>
+            <div class="theme-switch">
+              <input type="checkbox" id="theme-toggle">
+              <label for="theme-toggle">
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
+              </label>
+            </div>
+          </li>
+        </ul>
+        <div class="hamburger-menu">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- About Page Content -->
+    <div class="page-header">
+      <h2>Our Story</h2>
+      <p>The journey behind Savory Bites Restaurant</p>
+    </div>
+
+    <!-- Story Section -->
+    <section class="story-section">
+      <div class="story-content">
+        <div class="story-text">
+          <h3>Where It All Began</h3>
+          <p>Founded in 2010 by acclaimed chef Michael Anderson, Savory Bites started as a small café with a big dream: to serve exceptional food that celebrates both tradition and innovation.</p>
+          <p>Growing up in a family that valued home-cooked meals, Michael learned to appreciate the power of food to bring people together. After training at Le Cordon Bleu in Paris and working at several Michelin-starred restaurants across Europe, he returned home with a vision.</p>
+          <p>His philosophy was simple yet ambitious: source the finest ingredients locally, prepare them with respect and creativity, and serve them in a warm, welcoming atmosphere.</p>
+        </div>
+        <div class="story-image">
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Restaurant beginning">
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Values Section -->
+    <section class="values-section">
+      <h3>Our Values</h3>
+      <div class="values-container">
+        <div class="value-card">
+          <i class="fas fa-leaf"></i>
+          <h4>Sustainability</h4>
+          <p>We partner with local farmers and suppliers who share our commitment to sustainable practices.</p>
+        </div>
+        <div class="value-card">
+          <i class="fas fa-heart"></i>
+          <h4>Passion</h4>
+          <p>Every dish is created with love and attention to detail, reflecting our passion for culinary excellence.</p>
+        </div>
+        <div class="value-card">
+          <i class="fas fa-users"></i>
+          <h4>Community</h4>
+          <p>We believe in fostering relationships with our guests and contributing to the local community.</p>
+        </div>
+        <div class="value-card">
+          <i class="fas fa-sync-alt"></i>
+          <h4>Innovation</h4>
+          <p>While respecting culinary traditions, we continuously explore new flavors and techniques.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+      <h3>Meet Our Team</h3>
+      <div class="team-container">
+        <div class="team-member">
+          <div class="member-image">
+            <img src="https://images.unsplash.com/photo-1566554273541-37a9ca77b91f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="Chef Michael Anderson">
+          </div>
+          <div class="member-info">
+            <h4>Michael Anderson</h4>
+            <p class="member-role">Executive Chef & Founder</p>
+            <p>With over 20 years of culinary expertise, Michael brings his passion for innovative cuisine to every dish.</p>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="member-image">
+            <img src="https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="Sofia Martinez">
+          </div>
+          <div class="member-info">
+            <h4>Sofia Martinez</h4>
+            <p class="member-role">Head Chef</p>
+            <p>A culinary artist specializing in fusion cuisine, Sofia's creations blend flavors from around the world.</p>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="member-image">
+            <img src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=670&q=80" alt="David Chen">
+          </div>
+          <div class="member-info">
+            <h4>David Chen</h4>
+            <p class="member-role">Pastry Chef</p>
+            <p>David's exquisite desserts are the perfect finale to any meal, combining classic techniques with creative twists.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Savory Bites</h3>
+          <p>Experience the art of fine dining in a comfortable and elegant atmosphere.</p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-yelp"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Hours</h3>
+          <p>Monday - Thursday: 11am - 10pm</p>
+          <p>Friday - Saturday: 11am - 11pm</p>
+          <p>Sunday: 10am - 9pm</p>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p><i class="fas fa-map-marker-alt"></i> 123 Main Street, New York, NY 10001</p>
+          <p><i class="fas fa-phone"></i> (212) 555-1234</p>
+          <p><i class="fas fa-envelope"></i> info@savorybites.com</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Savory Bites Restaurant. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
