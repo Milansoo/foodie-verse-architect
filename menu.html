@@ -69,6 +69,31 @@
         <div id="empty-cart-message">Your cart is empty</div>
         <ul id="cart-items-list"></ul>
         <div id="cart-total">Total: $0.00</div>
+        
+        <!-- Delivery Details Section -->
+        <div id="delivery-details" class="delivery-details">
+          <h4>Delivery Details</h4>
+          <div class="form-group">
+            <label for="delivery-address">Delivery Address</label>
+            <textarea id="delivery-address" placeholder="Enter your full delivery address"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="delivery-time">Preferred Time</label>
+            <select id="delivery-time">
+              <option value="">Select a time</option>
+              <option value="asap">As soon as possible</option>
+              <option value="30min">Within 30 minutes</option>
+              <option value="1hour">Within 1 hour</option>
+              <option value="2hour">Within 2 hours</option>
+              <option value="specific">Specific time</option>
+            </select>
+          </div>
+          <div id="specific-time-container" class="form-group" style="display: none;">
+            <label for="specific-time-input">Select Specific Time</label>
+            <input type="time" id="specific-time-input">
+          </div>
+        </div>
+        
         <button id="place-order-btn" class="btn-primary" disabled>Place Order</button>
       </div>
     </div>

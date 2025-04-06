@@ -11,6 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const cartItems = document.getElementById('cart-items');
   const emptyCartMessage = document.getElementById('empty-cart-message');
   const placeOrderBtn = document.getElementById('place-order-btn');
+  const deliveryAddressInput = document.getElementById('delivery-address');
+  const deliveryTimeSelect = document.getElementById('delivery-time');
+  const specificTimeContainer = document.getElementById('specific-time-container');
+  const specificTimeInput = document.getElementById('specific-time-input');
   
   // Sample menu items for initial setup
   const sampleMenuItems = [
@@ -151,12 +155,20 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Add item to cart
   function addToCart(e) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    
+    // Only allow logged in users to add to cart
+    if (!currentUser) {
+      window.location.href = 'auth.html';
+      return;
+    }
+    
     const itemId = e.currentTarget.getAttribute('data-id');
     const menuItems = getMenuItems();
     const item = menuItems.find(item => item.id === itemId);
     
-    // Get cart from local storage
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    // Get cart from session storage
+    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     
     // Check if item is already in cart
     const existingItem = cart.find(cartItem => cartItem.id === itemId);
@@ -172,8 +184,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
     
-    // Save cart to local storage
-    localStorage.setItem('cart', JSON.stringify(cart));
+    // Save cart to session storage
+    sessionStorage.setItem('cart', JSON.stringify(cart));
     
     // Show success message
     const addButton = e.currentTarget;
@@ -197,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateCartDisplay() {
     if (!cartItemsList || !cartCount || !cartTotal || !emptyCartMessage) return;
     
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     
     // Update cart count
     const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
@@ -207,9 +219,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cart.length === 0) {
       emptyCartMessage.style.display = 'block';
       placeOrderBtn.disabled = true;
+      placeOrderBtn.style.opacity = '0.5';
     } else {
       emptyCartMessage.style.display = 'none';
-      placeOrderBtn.disabled = false;
+      validateOrderForm();
     }
     
     // Clear cart items list
@@ -263,12 +276,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Increase item quantity in cart
   function increaseQuantity(e) {
     const itemId = e.currentTarget.getAttribute('data-id');
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     
     const item = cart.find(item => item.id === itemId);
     if (item) {
       item.quantity += 1;
-      localStorage.setItem('cart', JSON.stringify(cart));
+      sessionStorage.setItem('cart', JSON.stringify(cart));
       updateCartDisplay();
     }
   }
@@ -276,13 +289,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Decrease item quantity in cart
   function decreaseQuantity(e) {
     const itemId = e.currentTarget.getAttribute('data-id');
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     
     const item = cart.find(item => item.id === itemId);
     if (item) {
       if (item.quantity > 1) {
         item.quantity -= 1;
-        localStorage.setItem('cart', JSON.stringify(cart));
+        sessionStorage.setItem('cart', JSON.stringify(cart));
       } else {
         removeFromCart(e);
         return;
@@ -294,18 +307,103 @@ document.addEventListener('DOMContentLoaded', () => {
   // Remove item from cart
   function removeFromCart(e) {
     const itemId = e.currentTarget.getAttribute('data-id');
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     
     cart = cart.filter(item => item.id !== itemId);
-    localStorage.setItem('cart', JSON.stringify(cart));
+    sessionStorage.setItem('cart', JSON.stringify(cart));
     updateCartDisplay();
   }
   
-  // Place an order (template function, can be extended)
+  // Validate order form
+  function validateOrderForm() {
+    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    const address = deliveryAddressInput ? deliveryAddressInput.value.trim() : '';
+    const timeOption = deliveryTimeSelect ? deliveryTimeSelect.value : '';
+    const specificTime = specificTimeInput ? specificTimeInput.value : '';
+    
+    // Enable order button only if cart has items and delivery details are filled
+    if (cart.length > 0 && address !== '' && 
+        (timeOption !== '' && timeOption !== 'specific' || 
+         (timeOption === 'specific' && specificTime !== ''))) {
+      placeOrderBtn.disabled = false;
+      placeOrderBtn.style.opacity = '1';
+    } else {
+      placeOrderBtn.disabled = true;
+      placeOrderBtn.style.opacity = '0.5';
+    }
+  }
+  
+  // Place an order
   function placeOrder() {
-    alert('Order placed successfully! Thank you for your purchase.');
-    localStorage.removeItem('cart');
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    
+    if (!currentUser || cart.length === 0) return;
+    
+    // Get delivery details
+    const address = deliveryAddressInput.value.trim();
+    const timeOption = deliveryTimeSelect.value;
+    const specificTime = specificTimeInput.value;
+    
+    // Format delivery time
+    let deliveryTime = '';
+    switch(timeOption) {
+      case 'asap':
+        deliveryTime = 'As soon as possible';
+        break;
+      case '30min':
+        deliveryTime = 'Within 30 minutes';
+        break;
+      case '1hour':
+        deliveryTime = 'Within 1 hour';
+        break;
+      case '2hour':
+        deliveryTime = 'Within 2 hours';
+        break;
+      case 'specific':
+        deliveryTime = `At ${specificTime}`;
+        break;
+      default:
+        deliveryTime = 'Not specified';
+    }
+    
+    // Calculate total price
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    
+    // Create new order
+    const order = {
+      id: generateOrderId(),
+      userId: currentUser.email,
+      userName: currentUser.name,
+      items: cart,
+      total: total,
+      address: address,
+      deliveryTime: deliveryTime,
+      status: 'pending',
+      date: new Date().toISOString()
+    };
+    
+    // Get existing orders
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    
+    // Add new order
+    orders.push(order);
+    localStorage.setItem('orders', JSON.stringify(orders));
+    
+    // Clear cart and form
+    sessionStorage.removeItem('cart');
+    if(deliveryAddressInput) deliveryAddressInput.value = '';
+    if(deliveryTimeSelect) deliveryTimeSelect.value = '';
+    if(specificTimeInput) specificTimeInput.value = '';
     updateCartDisplay();
+    
+    // Show success message
+    alert('Order placed successfully! You can view your order in your account dashboard.');
+  }
+  
+  // Generate unique order ID
+  function generateOrderId() {
+    return 'ORD' + Math.floor(Math.random() * 100000).toString().padStart(5, '0');
   }
   
   // Event listeners for category buttons
@@ -338,14 +436,47 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   
+  // Show/hide specific time input based on delivery time selection
+  if (deliveryTimeSelect) {
+    deliveryTimeSelect.addEventListener('change', function() {
+      if (this.value === 'specific') {
+        specificTimeContainer.style.display = 'block';
+      } else {
+        specificTimeContainer.style.display = 'none';
+      }
+      validateOrderForm();
+    });
+  }
+  
+  // Add event listeners for form inputs
+  if (deliveryAddressInput) {
+    deliveryAddressInput.addEventListener('input', validateOrderForm);
+  }
+  
+  if (specificTimeInput) {
+    specificTimeInput.addEventListener('input', validateOrderForm);
+  }
+  
   // Place order button
   if (placeOrderBtn) {
     placeOrderBtn.addEventListener('click', placeOrder);
   }
   
+  // Load saved address from user profile if available
+  function loadUserAddress() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser && currentUser.address && deliveryAddressInput) {
+      deliveryAddressInput.value = currentUser.address;
+      validateOrderForm();
+    }
+  }
+  
   // Initialize menu display
   displayMenuItems();
   
-  // Initialize cart display (loads cart from localStorage)
+  // Initialize cart display
   updateCartDisplay();
+  
+  // Load user address if available
+  loadUserAddress();
 });
