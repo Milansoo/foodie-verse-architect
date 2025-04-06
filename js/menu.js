@@ -151,21 +151,12 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Add item to cart
   function addToCart(e) {
-    // Get current user
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    
-    // Only allow logged in users to add to cart
-    if (!currentUser) {
-      window.location.href = 'auth.html';
-      return;
-    }
-    
     const itemId = e.currentTarget.getAttribute('data-id');
     const menuItems = getMenuItems();
     const item = menuItems.find(item => item.id === itemId);
     
-    // Get cart from session storage
-    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    // Get cart from local storage
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
     
     // Check if item is already in cart
     const existingItem = cart.find(cartItem => cartItem.id === itemId);
@@ -181,8 +172,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
     
-    // Save cart to session storage
-    sessionStorage.setItem('cart', JSON.stringify(cart));
+    // Save cart to local storage
+    localStorage.setItem('cart', JSON.stringify(cart));
     
     // Show success message
     const addButton = e.currentTarget;
@@ -206,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateCartDisplay() {
     if (!cartItemsList || !cartCount || !cartTotal || !emptyCartMessage) return;
     
-    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
     
     // Update cart count
     const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
@@ -216,11 +207,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cart.length === 0) {
       emptyCartMessage.style.display = 'block';
       placeOrderBtn.disabled = true;
-      placeOrderBtn.style.opacity = '0.5';
     } else {
       emptyCartMessage.style.display = 'none';
       placeOrderBtn.disabled = false;
-      placeOrderBtn.style.opacity = '1';
     }
     
     // Clear cart items list
@@ -274,12 +263,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Increase item quantity in cart
   function increaseQuantity(e) {
     const itemId = e.currentTarget.getAttribute('data-id');
-    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
     
     const item = cart.find(item => item.id === itemId);
     if (item) {
       item.quantity += 1;
-      sessionStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem('cart', JSON.stringify(cart));
       updateCartDisplay();
     }
   }
@@ -287,13 +276,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Decrease item quantity in cart
   function decreaseQuantity(e) {
     const itemId = e.currentTarget.getAttribute('data-id');
-    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
     
     const item = cart.find(item => item.id === itemId);
     if (item) {
       if (item.quantity > 1) {
         item.quantity -= 1;
-        sessionStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem('cart', JSON.stringify(cart));
       } else {
         removeFromCart(e);
         return;
@@ -305,52 +294,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // Remove item from cart
   function removeFromCart(e) {
     const itemId = e.currentTarget.getAttribute('data-id');
-    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
     
     cart = cart.filter(item => item.id !== itemId);
-    sessionStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem('cart', JSON.stringify(cart));
     updateCartDisplay();
   }
   
-  // Place an order
+  // Place an order (template function, can be extended)
   function placeOrder() {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-    
-    if (!currentUser || cart.length === 0) return;
-    
-    // Calculate total price
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    
-    // Create new order
-    const order = {
-      id: generateOrderId(),
-      userId: currentUser.email,
-      userName: currentUser.name,
-      items: cart,
-      total: total,
-      status: 'pending',
-      date: new Date().toISOString()
-    };
-    
-    // Get existing orders
-    const orders = JSON.parse(localStorage.getItem('orders')) || [];
-    
-    // Add new order
-    orders.push(order);
-    localStorage.setItem('orders', JSON.stringify(orders));
-    
-    // Clear cart
-    sessionStorage.removeItem('cart');
+    alert('Order placed successfully! Thank you for your purchase.');
+    localStorage.removeItem('cart');
     updateCartDisplay();
-    
-    // Show success message
-    alert('Order placed successfully! You can view your order in your account dashboard.');
-  }
-  
-  // Generate unique order ID
-  function generateOrderId() {
-    return 'ORD' + Math.floor(Math.random() * 100000).toString().padStart(5, '0');
   }
   
   // Event listeners for category buttons
@@ -391,6 +346,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize menu display
   displayMenuItems();
   
-  // Initialize cart display
+  // Initialize cart display (loads cart from localStorage)
   updateCartDisplay();
 });
