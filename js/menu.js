@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const specificTimeContainer = document.getElementById('specific-time-container');
   const specificTimeInput = document.getElementById('specific-time-input');
   
-  // Sample menu items for initial setup
+  // Sample menu items for initial setup - only used if no menu items exist in storage
   const sampleMenuItems = [
     {
       id: '1',
