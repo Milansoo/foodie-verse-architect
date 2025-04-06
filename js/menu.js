@@ -1,5 +1,52 @@
-
 // Add these functions to your existing menu.js file
+
+// Get menu items function
+function getMenuItems() {
+  // Here you would typically fetch menu data from a server
+  // For now, we'll use static menu items stored in the JavaScript
+  return [
+    {
+      id: "item1",
+      name: "Classic Burger",
+      description: "Juicy beef patty with lettuce, tomato, and special sauce",
+      price: 8.99,
+      category: "burgers",
+      image: "images/classic-burger.jpg"
+    },
+    {
+      id: "item2",
+      name: "Veggie Burger",
+      description: "Plant-based patty with avocado, sprouts, and vegan mayo",
+      price: 9.99,
+      category: "burgers",
+      image: "images/veggie-burger.jpg"
+    },
+    {
+      id: "item3",
+      name: "Caesar Salad",
+      description: "Crisp romaine lettuce with Caesar dressing and croutons",
+      price: 7.99,
+      category: "salads",
+      image: "images/caesar-salad.jpg"
+    },
+    {
+      id: "item4",
+      name: "Margherita Pizza",
+      description: "Classic pizza with tomato sauce, mozzarella, and basil",
+      price: 12.99,
+      category: "pizza",
+      image: "images/margherita-pizza.jpg"
+    },
+    {
+      id: "item5",
+      name: "Chocolate Brownie",
+      description: "Rich chocolate brownie with vanilla ice cream",
+      price: 5.99,
+      category: "desserts",
+      image: "images/chocolate-brownie.jpg"
+    }
+  ];
+}
 
 // Add to Cart Function
 function addToCart(e) {
@@ -211,9 +258,16 @@ function generateOrderId() {
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
-  // Add to Cart Button Event Listeners
-  document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+  console.log("DOM fully loaded, setting up cart functionality");
+  
+  // Get all add to cart buttons
+  const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+  console.log("Found " + addToCartButtons.length + " 'Add to Cart' buttons");
+  
+  // Add click event listener to each button
+  addToCartButtons.forEach(btn => {
     btn.addEventListener('click', addToCart);
+    console.log("Added click event listener to button: " + btn.getAttribute('data-id'));
   });
 
   // Toggle Cart Button Event Listener
@@ -230,14 +284,21 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleCartBtn.innerHTML = `<i class="fas fa-shopping-cart"></i> <span id="cart-count">${document.getElementById('cart-count').textContent}</span>`;
       }
     });
+    console.log("Added toggle event listener to cart button");
+  } else {
+    console.warn("Could not find toggle cart button or cart items container");
   }
 
   // Place Order Button Event Listener
   const placeOrderBtn = document.getElementById('place-order-btn');
   if (placeOrderBtn) {
     placeOrderBtn.addEventListener('click', placeOrder);
+    console.log("Added click event listener to Place Order button");
+  } else {
+    console.warn("Could not find place order button");
   }
 
   // Initialize cart display
   updateCartDisplay();
+  console.log("Cart display initialized");
 });
